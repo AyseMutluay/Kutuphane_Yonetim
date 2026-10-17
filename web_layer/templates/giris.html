@@ -1,0 +1,23 @@
+{% extends "taban.html" %}
+{% block baslik %}Giriş · Online Kütüphane{% endblock %}
+{% block icerik %}
+<section class="giris">
+  <h1>Giriş</h1>
+  <p class="ozet">Öğrenci numarası, personel kodu veya e-posta ile giriş yapın.</p>
+  <form class="kart giris-form" method="post" action="{{ url_for('giris') }}">
+    <label for="kimlik">Kullanıcı adı</label>
+    <input id="kimlik" name="kimlik" autocomplete="username" required>
+    <label for="parola">Parola</label>
+    <input id="parola" name="parola" type="password" autocomplete="current-password" required>
+    <button type="submit">Giriş yap</button>
+  </form>
+  <div class="ornekler">
+    <p>Sınıf içi demo hesapları</p>
+    <ul>
+      <li>Ali Kaya, öğrenci: <code>2024101</code> / <code>ali123</code></li>
+      <li>Ece Arslan, öğrenci: <code>2024088</code> / <code>ece123</code></li>
+      <li>Selin Demir, yönetici: <code>P-07</code> / <code>yonetici</code></li>
+    </ul>
+  </div>
+</section>
+{% endblock %}

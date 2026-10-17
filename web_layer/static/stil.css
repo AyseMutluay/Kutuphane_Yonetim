@@ -1,0 +1,245 @@
+:root {
+  --kagit: #f3efe6;
+  --murekkep: #1c2822;
+  --soluk: #5c675f;
+  --cizgi: #ddd4c4;
+  --kart: #fffdf8;
+  --yesil: #1f6a4a;
+  --yesil-koyu: #143d2e;
+  --tugla: #8d3d32;
+  --altin: #b08948;
+  --olumlu: #e5f2ea;
+  --olumsuz: #f8e8e4;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  color: var(--murekkep);
+  background:
+    linear-gradient(180deg, rgba(176, 137, 72, 0.16), transparent 180px),
+    var(--kagit);
+  font: 16px/1.5 "Segoe UI", "Helvetica Neue", sans-serif;
+}
+
+a { color: inherit; }
+
+.tepe {
+  background: var(--yesil-koyu);
+  color: #f6f3ea;
+}
+
+.tepe-ic, nav, main {
+  width: min(1040px, calc(100% - 32px));
+  margin: 0 auto;
+}
+
+.tepe-ic {
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  align-items: end;
+  padding: 22px 0 12px;
+}
+
+.kurum {
+  margin: 0;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-size: 12px;
+  color: #d7c7a4;
+}
+
+.marka {
+  display: inline-block;
+  margin-top: 4px;
+  font-family: Georgia, "Palatino Linotype", serif;
+  font-size: 30px;
+  text-decoration: none;
+}
+
+.oturum {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.kim {
+  margin: 0;
+  text-align: right;
+  font-size: 14px;
+}
+
+.kim span {
+  display: block;
+  color: #d7c7a4;
+  font-size: 12px;
+}
+
+.giris { max-width: 440px; margin: 28px auto 0; }
+
+.giris-form { display: block; }
+
+.giris-form label,
+.giris-form input,
+.giris-form button { display: block; width: 100%; }
+
+.giris-form input { margin: 6px 0 14px; }
+
+.ornekler {
+  margin-top: 18px;
+  color: var(--soluk);
+  font-size: 14px;
+}
+
+.ornekler ul { padding-left: 18px; }
+
+.ornekler code {
+  color: var(--murekkep);
+  background: #efe8d8;
+  padding: 1px 6px;
+  border-radius: 4px;
+}
+
+nav {
+  display: flex;
+  gap: 8px;
+  padding-bottom: 14px;
+}
+
+nav a {
+  text-decoration: none;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+nav a:hover { background: rgba(255, 255, 255, 0.16); }
+
+main { padding: 28px 0 64px; }
+
+h1, h2 {
+  margin: 0;
+  font-family: Georgia, "Palatino Linotype", serif;
+  font-weight: 600;
+}
+
+h1 { font-size: 34px; }
+
+.baslik-satiri {
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  align-items: end;
+  margin-bottom: 18px;
+}
+
+.baslik-satiri.ikinci { margin-top: 36px; }
+
+.ozet, .ikincil, .dipnot { color: var(--soluk); }
+
+.ozet { margin: 6px 0 0; }
+
+.ikincil { display: block; font-size: 14px; }
+
+.dipnot { font-size: 14px; }
+
+.arama, .kart, .satir-form, .islem form {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.kart {
+  flex-wrap: wrap;
+  padding: 16px;
+  background: var(--kart);
+  border: 1px solid var(--cizgi);
+  border-top: 3px solid var(--altin);
+}
+
+label { font-size: 14px; }
+
+input, select, button {
+  font: inherit;
+  color: var(--murekkep);
+}
+
+input, select {
+  background: white;
+  border: 1px solid #cfc4b0;
+  border-radius: 6px;
+  padding: 8px 10px;
+  min-height: 40px;
+}
+
+button {
+  background: var(--yesil);
+  color: white;
+  border: 0;
+  border-radius: 6px;
+  padding: 8px 14px;
+  min-height: 40px;
+  cursor: pointer;
+}
+
+button:hover { background: var(--yesil-koyu); }
+
+.tablo-sarmal {
+  overflow-x: auto;
+  background: var(--kart);
+  border: 1px solid var(--cizgi);
+}
+
+table { width: 100%; border-collapse: collapse; }
+
+th, td {
+  text-align: left;
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--cizgi);
+  vertical-align: middle;
+}
+
+th {
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--soluk);
+}
+
+.islem { white-space: nowrap; }
+
+.rozet {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 13px;
+  margin-right: 8px;
+}
+
+.rozet.musait { background: #e7f3ec; color: var(--yesil-koyu); }
+.rozet.tukendi, .rozet.gecikmede { background: #f8e6e2; color: var(--tugla); }
+.rozet.iade { background: #eeeae2; color: var(--soluk); }
+
+.bildirim {
+  padding: 10px 14px;
+  border-radius: 8px;
+  margin: 0 0 16px;
+}
+
+.bildirim.olumlu { background: var(--olumlu); }
+.bildirim.olumsuz { background: var(--olumsuz); }
+
+.bos {
+  padding: 28px;
+  background: var(--kart);
+  border: 1px dashed var(--cizgi);
+}
+
+@media (max-width: 760px) {
+  .tepe-ic, .baslik-satiri, .oturum, .arama, .kart { display: block; }
+  .oturum select, .arama input, .kart input { width: 100%; margin: 6px 0; }
+  .marka { font-size: 26px; }
+}

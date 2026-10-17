@@ -1,0 +1,58 @@
+{% extends "taban.html" %}
+{% block baslik %}Ödünçlerim · Online Kütüphane{% endblock %}
+{% block icerik %}
+<section class="baslik-satiri">
+  <div>
+    <h1>Ödünçlerim</h1>
+    <p class="ozet">{{ hesap.ad_soyad }} · açık ödünç {{ hesap.aktif_odunc_sayisi }}</p>
+  </div>
+</section>
+
+{% if kayitlar %}
+<div class="tablo-sarmal">
+  <table>
+    <thead>
+      <tr>
+        <th>Kitap</th>
+        <th>Alış</th>
+        <th>Son teslim</th>
+        <th>Durum</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for odunc, kitap in kayitlar %}
+      <tr>
+        <td>
+          <strong>{{ kitap.baslik }}</strong>
+          <span class="ikincil">{{ kitap.yazar }}</span>
+        </td>
+        <td>{{ odunc.alis_tarihi|tr_tarih }}</td>
+        <td>{{ odunc.son_teslim_tarihi|tr_tarih }}</td>
+        <td>
+          <span class="rozet {{ 'gecikmede' if odunc.durum == 'Gecikmede' else 'musait' if odunc.durum == 'Ödünçte' else 'iade' }}">
+            {{ odunc.durum }}
+          </span>
+          {% if odunc.gecikme_gun_hesapla() > 0 %}
+          <span class="ikincil">{{ odunc.gecikme_gun_hesapla() }} gün</span>
+          {% endif %}
+        </td>
+        <td class="islem">
+          {% if odunc.iade_tarihi is none %}
+          <form method="post" action="{{ url_for('iade') }}">
+            <input type="hidden" name="odunc_id" value="{{ odunc.id }}">
+            <button type="submit">İade et</button>
+          </form>
+          {% else %}
+          <span class="ikincil">{{ odunc.iade_tarihi|tr_tarih }}</span>
+          {% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% else %}
+<p class="bos">Açık ya da geçmiş ödünç yok.</p>
+{% endif %}
+{% endblock %}

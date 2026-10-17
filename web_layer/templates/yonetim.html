@@ -1,0 +1,110 @@
+{% extends "taban.html" %}
+{% block baslik %}Yönetim · Online Kütüphane{% endblock %}
+{% block icerik %}
+<section class="baslik-satiri">
+  <div>
+    <h1>Kitap ekle</h1>
+    <p class="ozet">Yeni kayıtta mevcut stok, toplam stoka eşit başlar. Açık ödünç yoktur.</p>
+  </div>
+</section>
+
+<form class="kart" method="post" action="{{ url_for('kitap_ekle') }}">
+  <label for="baslik">Başlık</label>
+  <input id="baslik" name="baslik" required>
+  <label for="yazar">Yazar</label>
+  <input id="yazar" name="yazar" required>
+  <label for="isbn">ISBN</label>
+  <input id="isbn" name="isbn" required>
+  <label for="stok">Kopya sayısı</label>
+  <input id="stok" name="stok" type="number" min="1" value="1" required>
+  <button type="submit">Kataloğa ekle</button>
+</form>
+
+<section class="baslik-satiri ikinci">
+  <div>
+    <h2>Stok güncelle</h2>
+    <p class="ozet">Yeni toplam, açık ödünç sayısından küçük olamaz. Mevcut stok = toplam stok − açık ödünç.</p>
+  </div>
+</section>
+
+<div class="tablo-sarmal">
+  <table>
+    <thead>
+      <tr>
+        <th>Kitap</th>
+        <th>Mevcut / toplam</th>
+        <th>Yeni toplam</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for kitap in kitaplar %}
+      <tr>
+        <td>
+          <strong>{{ kitap.baslik }}</strong>
+          <span class="ikincil">{{ kitap.isbn }}</span>
+        </td>
+        <td>{{ kitap.mevcut_stok }} / {{ kitap.toplam_stok }}</td>
+        <td>
+          <form class="satir-form" method="post" action="{{ url_for('stok_guncelle') }}">
+            <input type="hidden" name="kitap_id" value="{{ kitap.id }}">
+            <input name="yeni_stok" type="number" min="0" value="{{ kitap.toplam_stok }}" aria-label="{{ kitap.baslik }} yeni toplam stok">
+            <button type="submit">Kaydet</button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<section class="baslik-satiri ikinci">
+  <div>
+    <h2>Ödünç hareketleri</h2>
+    <p class="ozet">Hangi öğrencinin hangi kitabı ne zaman aldığı ve iade ettiği.</p>
+  </div>
+</section>
+
+{% if hareketler %}
+<div class="tablo-sarmal">
+  <table>
+    <thead>
+      <tr>
+        <th>Öğrenci</th>
+        <th>Kitap</th>
+        <th>Alış</th>
+        <th>Son teslim</th>
+        <th>İade</th>
+        <th>Durum</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for hareket in hareketler %}
+      <tr>
+        <td>
+          <strong>{{ hareket.ogrenci_ad }}</strong>
+          <span class="ikincil">{{ hareket.ogrenci_no }}</span>
+        </td>
+        <td>
+          <strong>{{ hareket.baslik }}</strong>
+          <span class="ikincil">{{ hareket.yazar }}</span>
+        </td>
+        <td>{{ hareket.alis_tarihi|tr_tarih }}</td>
+        <td>{{ hareket.son_teslim_tarihi|tr_tarih }}</td>
+        <td>{{ hareket.iade_tarihi|tr_tarih }}</td>
+        <td>
+          <span class="rozet {{ 'gecikmede' if hareket.durum == 'Gecikmede' else 'musait' if hareket.durum == 'Ödünçte' else 'iade' }}">
+            {{ hareket.durum }}
+          </span>
+          {% if hareket.geciken_gun > 0 %}
+          <span class="ikincil">{{ hareket.geciken_gun }} gün</span>
+          {% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% else %}
+<p class="bos">Henüz ödünç kaydı yok.</p>
+{% endif %}
+{% endblock %}

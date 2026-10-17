@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block baslik %}Online Kütüphane{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='stil.css') }}">
+</head>
+<body>
+  <header class="tepe">
+    <div class="tepe-ic">
+      <div>
+        <p class="kurum">Üniversite Kütüphanesi</p>
+        <a class="marka" href="{{ url_for('kitaplar') if kullanici else url_for('giris') }}">Online Kütüphane</a>
+      </div>
+      {% if kullanici %}
+      <div class="oturum">
+        <p class="kim">
+          {{ kullanici.ad_soyad }}
+          <span>{% if kullanici.rol == 'ogrenci' %}Öğrenci {{ kullanici.kod }}{% else %}Yönetici {{ kullanici.kod }}{% endif %}</span>
+        </p>
+        <form method="post" action="{{ url_for('cikis') }}">
+          <button type="submit">Çıkış</button>
+        </form>
+      </div>
+      {% endif %}
+    </div>
+    {% if kullanici %}
+    <nav>
+      <a href="{{ url_for('kitaplar') }}">Kitaplar</a>
+      {% if kullanici.rol == 'ogrenci' %}
+      <a href="{{ url_for('oduncler') }}">Ödünçlerim</a>
+      {% else %}
+      <a href="{{ url_for('gecikmeler') }}">Gecikmeler</a>
+      <a href="{{ url_for('yonetim') }}">Yönetim</a>
+      {% endif %}
+    </nav>
+    {% endif %}
+  </header>
+  <main>
+    {% with mesajlar = get_flashed_messages(with_categories=true) %}
+      {% for kategori, mesaj in mesajlar %}
+      <p class="bildirim {{ kategori }}" role="status">{{ mesaj }}</p>
+      {% endfor %}
+    {% endwith %}
+    {% block icerik %}{% endblock %}
+  </main>
+</body>
+</html>

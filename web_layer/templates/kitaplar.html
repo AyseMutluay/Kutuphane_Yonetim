@@ -1,0 +1,57 @@
+{% extends "taban.html" %}
+{% block baslik %}Kitaplar · Online Kütüphane{% endblock %}
+{% block icerik %}
+<section class="baslik-satiri">
+  <div>
+    <h1>Katalog</h1>
+    <p class="ozet">Arama başlık, yazar veya ISBN ile yapılır. Mevcut stok, raftaki kopya sayısıdır.</p>
+  </div>
+  <form class="arama" method="get" action="{{ url_for('kitaplar') }}">
+    <label for="q">Ara</label>
+    <input id="q" name="q" value="{{ kelime }}" placeholder="Python, ISBN, yazar">
+    <button type="submit">Ara</button>
+  </form>
+</section>
+
+{% if kitaplar %}
+<div class="tablo-sarmal">
+  <table>
+    <thead>
+      <tr>
+        <th>Kitap</th>
+        <th>ISBN</th>
+        <th>Stok</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for kitap in kitaplar %}
+      <tr>
+        <td>
+          <strong>{{ kitap.baslik }}</strong>
+          <span class="ikincil">{{ kitap.yazar }}</span>
+        </td>
+        <td>{{ kitap.isbn }}</td>
+        <td>{{ kitap.mevcut_stok }} / {{ kitap.toplam_stok }}</td>
+        <td class="islem">
+          {% if kitap.musait_mi() %}
+          <span class="rozet musait">Rafta</span>
+          {% else %}
+          <span class="rozet tukendi">Tükendi</span>
+          {% endif %}
+          {% if kullanici.rol == 'ogrenci' and kitap.musait_mi() %}
+          <form method="post" action="{{ url_for('odunc_al') }}">
+            <input type="hidden" name="kitap_id" value="{{ kitap.id }}">
+            <button type="submit">Ödünç al</button>
+          </form>
+          {% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% else %}
+<p class="bos">Bu aramaya uygun kitap yok.</p>
+{% endif %}
+{% endblock %}

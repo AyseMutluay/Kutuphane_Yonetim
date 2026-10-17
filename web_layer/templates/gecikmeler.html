@@ -1,0 +1,52 @@
+{% extends "taban.html" %}
+{% block baslik %}Gecikmeler · Online Kütüphane{% endblock %}
+{% block icerik %}
+<section class="baslik-satiri">
+  <div>
+    <h1>Gecikme raporu</h1>
+    <p class="ozet">İadesi boş ve son teslimi geçmiş ödünçler. Ceza, seçilen stratejiyle hesaplanır.</p>
+  </div>
+  <form class="arama" method="get" action="{{ url_for('gecikmeler') }}">
+    <label for="strateji">Ceza stratejisi</label>
+    <select id="strateji" name="strateji">
+      {% for anahtar, strateji in stratejiler.items() %}
+      <option value="{{ anahtar }}" {% if anahtar == secili %}selected{% endif %}>{{ strateji.ad }}</option>
+      {% endfor %}
+    </select>
+    <button type="submit">Uygula</button>
+  </form>
+</section>
+
+{% if kayitlar %}
+<div class="tablo-sarmal">
+  <table>
+    <thead>
+      <tr>
+        <th>Öğrenci</th>
+        <th>Kitap</th>
+        <th>Son teslim</th>
+        <th>Gün</th>
+        <th>Ceza</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for kayit in kayitlar %}
+      <tr>
+        <td>
+          <strong>{{ kayit.ogrenci_ad }}</strong>
+          <span class="ikincil">{{ kayit.ogrenci_no }}</span>
+        </td>
+        <td>{{ kayit.baslik }}</td>
+        <td>{{ kayit.son_teslim_tarihi|tr_tarih }}</td>
+        <td>{{ kayit.geciken_gun }}</td>
+        <td>{{ kayit.ceza|tl }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+<p class="dipnot">Strateji: {{ kayitlar[0].strateji_adi }}</p>
+{% else %}
+<p class="bos">Gecikmiş ödünç yok.</p>
+{% endif %}
+{% endblock %}
